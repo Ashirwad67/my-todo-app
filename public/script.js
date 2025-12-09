@@ -10,7 +10,7 @@ async function loadTodos() {
     const list = document.getElementById("todoList");
     list.innerHTML = "";
 
-    todos.forEach(todo => {
+    todos.forEach((todo) => {
       const li = document.createElement("li");
       li.innerHTML = `
         <span>${todo.text}</span>
@@ -32,7 +32,7 @@ async function addTodo() {
   await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text })
+    body: JSON.stringify({ text }),
   });
 
   input.value = "";
@@ -40,3 +40,16 @@ async function addTodo() {
 }
 
 // Delete todo
+async function deleteTodo(id) {
+  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  loadTodos();
+}
+
+// Connect buttons and input
+document.getElementById("addBtn").addEventListener("click", addTodo);
+document.getElementById("todoInput").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") addTodo();
+});
+
+// Load todos when page opens
+loadTodos();
